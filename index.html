@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F5F1E8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Endo-App" />
+  <title>Endo-App | Persönlicher Selbsthilfe- &amp; Tracking-Begleiter</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <!-- Sticky Top App Bar -->
+  <header class="top-bar no-print">
+    <div class="top-bar-inner">
+      <div class="brand-group">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <div>
+          <div class="brand-title">Endo-App</div>
+          <div class="brand-subtitle">Selbstbeobachtung &amp; Alltagshilfe</div>
+        </div>
+      </div>
+      <div class="top-actions">
+        <span id="mode-indicator" class="badge" title="Speichermodus">Lokal (PWA)</span>
+        <button type="button" id="btn-focus-toggle" class="btn btn-sm btn-ghost" title="Reizreduzierter Fokus-Modus">Fokus</button>
+        <button type="button" id="btn-theme-toggle" class="btn btn-sm btn-ghost" title="Tag/Nacht-Modus wechseln">Nacht</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hauptbereich mit 5 Tabs -->
+  <main class="app-main no-print">
+
+    <!-- ==================== TAB 1: HEUTE ==================== -->
+    <section id="tab-heute" class="tab-panel active" aria-label="Heute">
+      <!-- 1-Tap Akut-Schub Notfall-Banner (Funktionale Warnfarbe) -->
+      <div class="flare-emergency-banner">
+        <div class="flare-banner-text">
+          <h2>Akuter Schmerz- oder Entzündungsschub?</h2>
+          <p>Reduzierte 1-Tap Oberfläche zum schnellen Festhalten von Ort, Stärke und Akut-Hilfe.</p>
+        </div>
+        <button type="button" id="btn-open-flare-modal" class="btn btn-flare">1-Tap Schub</button>
+      </div>
+
+      <!-- Zyklus-Kompass Card -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Persönlich kalibrierter Zyklus-Kompass</div>
+            <h1 class="card-title">Aktueller Stand &amp; Tagesimpuls</h1>
+          </div>
+          <div style="text-align:right;">
+            <span id="compass-cycle-day" class="badge badge-accent">Tag 14</span>
+            <span id="compass-phase-label" class="badge">Ovulation</span>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-box">
+            <div id="compass-phase-pain" class="kpi-value">0.0</div>
+            <div class="kpi-label">Phasen-Schmerz (&Oslash;)</div>
+          </div>
+          <div class="kpi-box">
+            <div id="compass-phase-infl" class="kpi-value">0.0</div>
+            <div class="kpi-label">Entzündung (&Oslash;)</div>
+          </div>
+          <div class="kpi-box">
+            <div id="compass-phase-energy" class="kpi-value">0.0</div>
+            <div class="kpi-label">Energie (&Oslash;)</div>
+          </div>
+        </div>
+        <div id="compass-daily-impulse" class="impulse-box">
+          Lade persönliche Zyklus-Statistik...
+        </div>
+      </article>
+
+      <!-- 30-Sekunden Daily-Log Formular -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Tägliches Check-in</div>
+            <h2 class="card-title">30-Sekunden Daily-Log</h2>
+            <p class="card-subtitle">Erfasse deine wichtigsten Tageswerte mit wenigen Berührungen.</p>
+          </div>
+        </div>
+
+        <form id="daily-log-form">
+          <div class="form-row form-group">
+            <div>
+              <label class="form-label" for="log-date">Datum</label>
+              <input type="date" id="log-date" class="input" required />
+            </div>
+            <div>
+              <label class="form-label" for="log-cycle-day">Zyklustag</label>
+              <input type="number" id="log-cycle-day" class="input" min="1" max="60" value="14" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="log-pain">
+              <span>Schmerz-Intensität</span>
+              <span id="badge-log-pain" class="score-pill">3 / 10</span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="log-pain" class="range-slider" min="0" max="10" step="1" value="3" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="log-infl">
+              <span>Entzündungs- &amp; Druckgefühl</span>
+              <span id="badge-log-infl" class="score-pill">3 / 10</span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="log-infl" class="range-slider" min="0" max="10" step="1" value="3" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="log-energy">
+              <span>Energie- &amp; Belastungslevel</span>
+              <span id="badge-log-energy" class="score-pill">7 / 10</span>
+            </label>
+            <div class="slider-wrap">
+              <input type="range" id="log-energy" class="range-slider" min="0" max="10" step="1" value="7" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Ernährung &amp; Tagesfaktoren (Antippen)</div>
+            <div id="nutrition-tag-cloud" class="tag-cloud"></div>
+            <div style="display:flex;gap:8px;margin-top:8px;" class="focus-optional">
+              <input type="text" id="input-custom-tag" class="input" placeholder="Eigenes Tag ergänzen (z. B. kurkuma)" />
+              <button type="button" id="btn-add-custom-tag" class="btn btn-ghost">Hinzufügen</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="form-label">Verdauung &amp; Bauchgefühl</div>
+            <div id="digestion-tag-cloud" class="tag-cloud"></div>
+          </div>
+
+          <div class="form-row form-group focus-optional">
+            <div>
+              <label class="form-label" for="log-activity-type">Bewegung / Aktivität</label>
+              <input type="text" id="log-activity-type" class="input" placeholder="z. B. Spaziergang, Yoga" value="Spaziergang" />
+            </div>
+            <div>
+              <label class="form-label" for="log-activity-intensity">Intensität</label>
+              <select id="log-activity-intensity" class="select">
+                <option value="none">Ruhetag / Keine</option>
+                <option value="mild" selected>Sanft / Mild</option>
+                <option value="moderat">Moderat</option>
+                <option value="intensiv">Intensiv</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Dynamische Custom Fields -->
+          <div id="custom-fields-form-area" class="focus-optional"></div>
+
+          <div class="form-group focus-optional">
+            <label class="form-label" for="log-general-note">Kurze Tagesnotiz ("Wie fühle ich mich heute?")</label>
+            <textarea id="log-general-note" class="textarea" placeholder="Optionale Beobachtungen, Schlaf, Wärme..."></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Tages-Eintrag speichern</button>
+        </form>
+      </article>
+
+      <!-- Letzte protokollierte Schuebe -->
+      <article class="card focus-optional">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Notfall-Protokoll</div>
+            <h2 class="card-title">Zuletzt dokumentierte Akut-Schübe</h2>
+          </div>
+        </div>
+        <div id="recent-flares-list" class="item-list"></div>
+      </article>
+    </section>
+
+    <!-- ==================== TAB 2: MUSTER ==================== -->
+    <section id="tab-muster" class="tab-panel" aria-label="Muster">
+      <!-- Jahres-Heatmap -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Langzeit-Verlauf (52 Wochen)</div>
+            <h2 class="card-title">Symptom- &amp; Entzündungs-Heatmap</h2>
+            <p class="card-subtitle">Jedes Kästchen zeigt die Tagesbelastung (Maximum aus Schmerz und Entzündung).</p>
+          </div>
+        </div>
+        <div class="heatmap-scroll">
+          <div id="heatmap-grid" class="heatmap-grid" aria-label="Jahres-Heatmap"></div>
+        </div>
+        <div class="heatmap-legend">
+          <span class="legend-item"><span class="heat-cell" data-bucket="0" style="display:inline-block;"></span> 0 (Ruhe / Kein Eintrag)</span>
+          <span class="legend-item"><span class="heat-cell" data-bucket="1" style="display:inline-block;"></span> 1 bis 3 (Mild)</span>
+          <span class="legend-item"><span class="heat-cell" data-bucket="2" style="display:inline-block;"></span> 4 bis 6 (Moderat)</span>
+          <span class="legend-item"><span class="heat-cell" data-bucket="3" style="display:inline-block;"></span> 7 bis 10 (Ausgeprägt)</span>
+        </div>
+      </article>
+
+      <!-- Verzoegerungs-Detektiv -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">24h bis 72h Lag-Korrelation</div>
+            <h2 class="card-title">Verzögerungs-Detektiv</h2>
+            <p class="card-subtitle">Erkennt zeitversetzte Muster nach bestimmten Faktoren (ab n &ge; 3 Einträgen).</p>
+          </div>
+        </div>
+        <div id="correlations-list" class="item-list"></div>
+      </article>
+
+      <!-- Persoenliche Ampel-Liste -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Persönliche Orientierung</div>
+            <h2 class="card-title">Ampel-Liste (Grün / Gelb / Rot)</h2>
+            <p class="card-subtitle">Was dir im Alltag fast immer guttut, was zyklusabhängig ist und was häufig triggert.</p>
+          </div>
+        </div>
+
+        <div class="segmented-bar">
+          <button type="button" class="seg-btn active" data-ampel-filter="all">Alle</button>
+          <button type="button" class="seg-btn" data-ampel-filter="green">Grün</button>
+          <button type="button" class="seg-btn" data-ampel-filter="yellow">Gelb</button>
+          <button type="button" class="seg-btn" data-ampel-filter="red">Rot</button>
+        </div>
+
+        <div class="form-group">
+          <input type="search" id="ampel-search-input" class="input" placeholder="Ampel-Einträge durchsuchen..." />
+        </div>
+
+        <div id="ampel-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="ampel-add-form" class="card-subtle focus-optional">
+          <div class="section-label">Neues Element zur Ampel hinzufügen</div>
+          <div class="form-row form-group">
+            <input type="text" id="ampel-name" class="input" placeholder="Bezeichnung (z. B. Haferbrei)" required />
+            <select id="ampel-category" class="select">
+              <option value="nutrition">Ernährung</option>
+              <option value="activity">Bewegung / Routine</option>
+            </select>
+            <select id="ampel-status" class="select">
+              <option value="green">Grün (Gut verträglich)</option>
+              <option value="yellow">Gelb (Zyklusabhängig)</option>
+              <option value="red">Rot (Häufiger Trigger)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <input type="text" id="ampel-notes" class="input" placeholder="Eigene Beobachtung dazu..." />
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Zur Ampel hinzufügen</button>
+        </form>
+      </article>
+
+      <!-- Selbst-Experimente -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Vorher / Nachher Vergleich</div>
+            <h2 class="card-title">Selbst-Experiment-Tracker</h2>
+            <p class="card-subtitle">Vergleicht deine durchschnittliche Symptomlast während eines Tests mit dem gleichen Zeitraum davor.</p>
+          </div>
+        </div>
+
+        <div id="experiments-list"></div>
+
+        <form id="experiment-add-form" class="card-subtle focus-optional" style="margin-top:12px;">
+          <div class="section-label">Neues Selbst-Experiment starten</div>
+          <div class="form-group">
+            <input type="text" id="exp-title" class="input" placeholder="Titel (z. B. 3 Wochen ohne Gluten)" required />
+          </div>
+          <div class="form-row form-group">
+            <div>
+              <label class="form-label" for="exp-start">Startdatum</label>
+              <input type="date" id="exp-start" class="input" required />
+            </div>
+            <div>
+              <label class="form-label" for="exp-end">Enddatum (optional)</label>
+              <input type="date" id="exp-end" class="input" />
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" id="exp-hypothesis" class="input" placeholder="Beobachtungsziel (z. B. Veränderung von Blähbauch &amp; Energie)" />
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Experiment speichern</button>
+        </form>
+      </article>
+    </section>
+
+    <!-- ==================== TAB 3: TRESOR ==================== -->
+    <section id="tab-tresor" class="tab-panel" aria-label="Tresor">
+      <!-- 1-Klick Arzttermin-Dossier Card -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Vorbereitung für Facharzt &amp; Sprechstunde</div>
+            <h2 class="card-title">1-Klick Arzttermin-Dossier (PDF / Druck)</h2>
+            <p class="card-subtitle">Bündelt deine 30/90-Tage-Übersicht, Verzögerungsmuster, Experimente, Laborwerte und offenen Fragen auf 1 bis 2 sachlichen Seiten.</p>
+          </div>
+        </div>
+        <button type="button" id="btn-print-dossier" class="btn btn-primary btn-block">
+          Arzttermin-Dossier (PDF) generieren
+        </button>
+      </article>
+
+      <!-- Laborwerte-Verlaufsgrafik (HTML5 Canvas) -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Blutwerte &amp; Verlauf</div>
+            <h2 class="card-title">Laborwerte-Tresor</h2>
+          </div>
+        </div>
+
+        <div id="lab-param-bar" class="segmented-bar"></div>
+
+        <div class="chart-container" style="margin-bottom:12px;">
+          <canvas id="lab-chart-canvas" class="lab-canvas" aria-label="Laborwerte Verlaufsgrafik"></canvas>
+        </div>
+
+        <div id="lab-entries-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="lab-add-form" class="card-subtle focus-optional">
+          <div class="section-label">Neuen Laborwert eintragen</div>
+          <div class="form-row form-group">
+            <input type="date" id="lab-date" class="input" required />
+            <input type="text" id="lab-parameter" class="input" placeholder="Parameter (z. B. CRP, Ferritin)" required />
+          </div>
+          <div class="form-row form-group">
+            <input type="number" step="0.01" id="lab-value" class="input" placeholder="Messwert (z. B. 2.4)" required />
+            <input type="text" id="lab-unit" class="input" placeholder="Einheit (z. B. mg/l)" />
+            <input type="text" id="lab-ref" class="input" placeholder="Referenz (z. B. &lt; 5.0)" />
+          </div>
+          <div class="form-group">
+            <input type="text" id="lab-notes" class="input" placeholder="Optionale Anmerkung..." />
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Laborwert speichern</button>
+        </form>
+      </article>
+
+      <!-- Befund- & Arztbrief-Archiv -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Dokumentation</div>
+            <h2 class="card-title">Befund- &amp; Arztbrief-Archiv</h2>
+          </div>
+        </div>
+
+        <div id="medical-notes-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="medical-note-form" class="card-subtle focus-optional">
+          <div class="section-label">Neuen Befund / Termin-Bericht festhalten</div>
+          <div class="form-row form-group">
+            <input type="date" id="note-date" class="input" required />
+            <input type="text" id="note-doctor-type" class="input" placeholder="Fachrichtung (z. B. Gynäkologie)" required />
+          </div>
+          <div class="form-group">
+            <textarea id="note-summary" class="textarea" placeholder="Kernergebnisse und besprochene nächste Schritte..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Befund speichern</button>
+        </form>
+      </article>
+
+      <!-- Offene Fragen fuer den naechsten Arztbesuch -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Gesprächsleitfaden</div>
+            <h2 class="card-title">Offene Fragen für den nächsten Arzttermin</h2>
+          </div>
+        </div>
+
+        <div id="doctor-questions-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="question-add-form" style="display:flex;gap:8px;">
+          <input type="text" id="question-input" class="input" placeholder="Neue Frage notieren..." required />
+          <button type="submit" class="btn btn-primary">Notieren</button>
+        </form>
+      </article>
+    </section>
+
+    <!-- ==================== TAB 4: RADAR ==================== -->
+    <section id="tab-radar" class="tab-panel" aria-label="Radar">
+      <!-- PubMed Studien-Radar -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Multi-Keyword &amp; Themencluster</div>
+            <h2 class="card-title">PubMed Studien-Radar</h2>
+            <p class="card-subtitle">Kuratierte und deduplizierte Forschungsübersicht zu Endometriose, viszeraler Entzündung, Bauchfell und Diagnostik-Lücke.</p>
+          </div>
+        </div>
+
+        <div id="study-cluster-bar" class="segmented-bar"></div>
+
+        <div class="form-group">
+          <input type="search" id="study-search-input" class="input" placeholder="Studien nach Stichwort, PMID oder Thema filtern..." />
+        </div>
+
+        <div id="studies-list"></div>
+      </article>
+
+      <!-- Termin-Agent Suchprofile -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Versorgungsangebote in der Nähe</div>
+            <h2 class="card-title">Termin-Agent (Suchprofile)</h2>
+            <p class="card-subtitle">Hinterlegte Direktprofile für Osteopathie, Lymphdrainage und Spezialsprechstunden.</p>
+          </div>
+        </div>
+
+        <div id="appointments-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="appointment-add-form" class="card-subtle focus-optional">
+          <div class="section-label">Neues Suchprofil anlegen</div>
+          <div class="form-group">
+            <input type="text" id="app-service-name" class="input" placeholder="Fachbereich (z. B. Beckenbodentherapie)" required />
+          </div>
+          <div class="form-row form-group">
+            <input type="text" id="app-zip" class="input" placeholder="PLZ (z. B. 10115)" value="10115" />
+            <input type="number" id="app-radius" class="input" placeholder="Radius km" value="15" min="1" max="200" />
+          </div>
+          <div class="form-group">
+            <input type="url" id="app-url" class="input" placeholder="Buchungs-URL (https://...)" />
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Suchprofil speichern</button>
+        </form>
+      </article>
+    </section>
+
+    <!-- ==================== TAB 5: MEHR ==================== -->
+    <section id="tab-mehr" class="tab-panel" aria-label="Mehr">
+      <!-- Eigene Tracking-Felder & Zykluslaenge -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Individualisierung</div>
+            <h2 class="card-title">Eigene Tracking-Felder &amp; Zyklus</h2>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="setting-cycle-length">Durchschnittliche Zykluslänge (Tage)</label>
+          <div style="display:flex;gap:8px;">
+            <input type="number" id="setting-cycle-length" class="input" min="15" max="60" value="28" />
+            <button type="button" id="btn-save-cycle-length" class="btn btn-primary">Speichern</button>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:16px;">Aktive Zusatzfelder im Daily-Log</div>
+        <div id="custom-fields-config-list" class="item-list" style="margin-bottom:14px;"></div>
+
+        <form id="custom-field-add-form" class="card-subtle">
+          <div class="section-label">Eigenes Tracking-Feld erstellen</div>
+          <div class="form-row form-group">
+            <input type="text" id="cf-new-label" class="input" placeholder="Name (z. B. Schlafqualität)" required />
+            <select id="cf-new-type" class="select">
+              <option value="scale_10">Skala 0 bis 10</option>
+              <option value="boolean">Ja / Nein Checkbox</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-ghost btn-sm">Feld hinzufügen</button>
+        </form>
+      </article>
+
+      <!-- Lokale PIN-Sperre -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Privatsphäre auf dem Mobilgerät</div>
+            <h2 class="card-title">Optionale 4-stellige PIN-Sperre</h2>
+          </div>
+          <span id="pin-status-badge" class="badge">Deaktiviert</span>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <input type="password" id="setting-pin-input" class="input" maxlength="4" inputmode="numeric" placeholder="4 Ziffern (z. B. 1234)" style="flex:1;min-width:140px;" />
+          <button type="button" id="btn-save-pin" class="btn btn-primary">PIN aktivieren</button>
+          <button type="button" id="btn-clear-pin" class="btn btn-ghost">PIN entfernen</button>
+        </div>
+      </article>
+
+      <!-- Daten-Management & Backup -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">100 % Datenhoheit (IndexedDB &amp; JSON)</div>
+            <h2 class="card-title">Backup, Demo-Daten &amp; Export</h2>
+          </div>
+        </div>
+        <div class="item-list">
+          <button type="button" id="btn-export-json" class="btn btn-primary btn-block">
+            JSON-Export herunterladen
+          </button>
+          <label class="btn btn-ghost btn-block" style="cursor:pointer;">
+            <span>JSON-Import hochladen</span>
+            <input type="file" id="input-import-json" accept="application/json,.json" style="display:none;" />
+          </label>
+          <button type="button" id="btn-load-demo" class="btn btn-ghost btn-block">
+            90-Tage Demo-Daten laden
+          </button>
+          <button type="button" id="btn-reset-all" class="btn btn-ghost btn-block" style="color:var(--secondary-accent);">
+            Alle Daten löschen
+          </button>
+        </div>
+      </article>
+
+      <!-- Handbuch Link -->
+      <article class="card">
+        <div class="card-header">
+          <div>
+            <div class="section-label">Dokumentation &amp; Hilfe</div>
+            <h2 class="card-title">Nutzerhandbuch</h2>
+            <p class="card-subtitle">Erklärung aller Funktionen, Verzögerungs-Analyse und iPhone Home-Screen Installation.</p>
+          </div>
+        </div>
+        <a href="./handbuch.html" class="btn btn-ghost btn-block">Nutzerhandbuch öffnen (handbuch.html)</a>
+      </article>
+    </section>
+
+    <footer class="compliance-notice">
+      Hinweis zur Zweckbestimmung: Die Endo-App dient ausschließlich der persönlichen Dokumentation und Selbstbeobachtung (Hilfe zur Selbsthilfe). Sie ist kein Medizinprodukt, stellt keine Diagnosen und ersetzt keine ärztliche Beratung.
+    </footer>
+  </main>
+
+  <!-- ==================== 1-TAP FLARE-UP MODAL (HIGH CONTRAST) ==================== -->
+  <div id="flare-modal" class="modal-backdrop no-print" role="dialog" aria-modal="true" aria-labelledby="flare-modal-title">
+    <div class="modal-sheet flare-high-contrast">
+      <div class="card-header">
+        <div>
+          <div class="section-label" style="color:#E07A68;">Reizarmer Akut-Modus</div>
+          <h2 id="flare-modal-title" class="card-title">Akuten Schub protokollieren</h2>
+        </div>
+        <button type="button" id="btn-close-flare-modal" class="btn btn-sm btn-ghost">&times; Schließen</button>
+      </div>
+
+      <form id="flare-up-form">
+        <div class="form-group">
+          <label class="form-label" for="flare-init-pain">
+            <span>Aktuelle Schmerzstärke</span>
+            <span id="badge-flare-init" class="score-pill score-critical">7 / 10</span>
+          </label>
+          <input type="range" id="flare-init-pain" class="range-slider high-alert" min="0" max="10" value="7" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="flare-peak-pain">
+            <span>Spitzenwert (Peak)</span>
+            <span id="badge-flare-peak" class="score-pill score-critical">8 / 10</span>
+          </label>
+          <input type="range" id="flare-peak-pain" class="range-slider high-alert" min="0" max="10" value="8" />
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Wo sitzt der Schmerz / Druck? (1-Tap)</div>
+          <div id="flare-locations-cloud" class="tag-cloud"></div>
+        </div>
+
+        <div class="form-group">
+          <div class="form-label">Was hilft dir gerade? (Akut-Helfer Checkliste)</div>
+          <div id="flare-measures-cloud" class="tag-cloud"></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="flare-notes">Kurze Notiz (optional)</label>
+          <input type="text" id="flare-notes" class="input" placeholder="z. B. plötzlich nach dem Aufstehen..." style="background:#2C2622;color:#F5F1E8;border-color:#544940;" />
+        </div>
+
+        <button type="submit" class="btn btn-flare btn-block">Schub jetzt speichern</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== PIN LOCK MODAL ==================== -->
+  <div id="pin-lock-modal" class="modal-backdrop no-print" role="dialog" aria-modal="true" aria-labelledby="pin-modal-title">
+    <div class="modal-sheet">
+      <div class="section-label">Privatsphäre-Schutz</div>
+      <h2 id="pin-modal-title" class="card-title" style="margin-bottom:8px;">Endo-App entsperren</h2>
+      <p class="card-subtitle" style="margin-bottom:14px;">Bitte gib deine 4-stellige PIN ein.</p>
+      <form id="pin-unlock-form">
+        <div class="form-group">
+          <input type="password" id="pin-unlock-input" class="input" maxlength="4" inputmode="numeric" placeholder="4-stellige PIN" required />
+        </div>
+        <p id="pin-unlock-error" style="color:var(--secondary-accent);font-size:0.82rem;margin-bottom:10px;"></p>
+        <button type="submit" class="btn btn-primary btn-block">Entsperren</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== TOAST NOTIFICATION ==================== -->
+  <div id="app-toast" class="no-print" style="display:none;position:fixed;bottom:76px;left:50%;transform:translateX(-50%);z-index:90;background:var(--text-main);color:var(--bg-card);padding:10px 18px;border-radius:999px;font-size:0.84rem;font-weight:600;box-shadow:var(--shadow-card);"></div>
+
+  <!-- ==================== PRINT ONLY DOSSIER CONTAINER (PHASE 6) ==================== -->
+  <section id="print-dossier-root" class="print-only-dossier" aria-label="Arzttermin-Dossier Druckansicht"></section>
+
+  <!-- ==================== FIXED BOTTOM TAB BAR (5 TABS) ==================== -->
+  <nav class="bottom-tab-bar no-print" aria-label="Hauptnavigation">
+    <div class="bottom-tab-inner">
+      <button type="button" class="tab-btn active" data-tab="heute">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Heute</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="muster">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Muster</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="tresor">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        <span>Tresor</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="radar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Radar</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="mehr">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Mehr</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Scripts (Relative Pfade fuer GitHub Pages & lokales Backend) -->
+  <script src="./js/logic_client.js"></script>
+  <script src="./js/db.js"></script>
+  <script src="./js/components/charts.js"></script>
+  <script src="./js/app.js"></script>
+</body>
+</html>

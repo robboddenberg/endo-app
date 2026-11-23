@@ -1,0 +1,24 @@
+# Sensible lokale Daten und Umgebungsvariablen
+data/
+data/*.json*
+secrets/
+.env
+credentials.json
+token.json
+
+# Python & Tests
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+env/
+
+# Node / Sonstiges / Logs / Google Drive Links
+node_modules/
+*.pid
+*.log
+*.gdoc
+.DS_Store
+Thumbs.db

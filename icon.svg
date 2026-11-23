@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Endo-App Icon">
+  <rect width="128" height="128" rx="28" fill="#F5F1E8" stroke="#DFD7C8" stroke-width="4"/>
+  <circle cx="64" cy="64" r="38" fill="#E8EFE9" stroke="#3A5443" stroke-width="5"/>
+  <path d="M64 38 C52 50, 48 62, 48 72 A16 16 0 0 0 80 72 C80 62, 76 50, 64 38 Z" fill="#3A5443"/>
+  <circle cx="64" cy="72" r="6" fill="#FCFBF7"/>
+</svg>

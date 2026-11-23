@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="de" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Endo-App | Nutzerhandbuch &amp; Leitfaden</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <header class="top-bar">
+    <div class="top-bar-inner">
+      <div class="brand-group">
+        <span class="brand-mark" aria-hidden="true">E</span>
+        <div>
+          <div class="brand-title">Endo-App Handbuch</div>
+          <div class="brand-subtitle">Anleitung für Alltag, Analyse &amp; Arztgespräch</div>
+        </div>
+      </div>
+      <a href="./index.html" class="btn btn-sm btn-primary">Zurück zur App</a>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <article class="card">
+      <div class="section-label">1. Philosophie &amp; Leitplanken</div>
+      <h1 class="card-title" style="font-size:1.2rem;margin-bottom:8px;">Hilfe zur Selbsthilfe im ruhigen Design</h1>
+      <p class="card-subtitle">
+        Die Endo-App ist dein persönlicher Single-User-Begleiter zur strukturierten Selbstbeobachtung bei Endometriose und chronischen Entzündungsprozessen. Die Oberfläche ist bewusst in warmen, reizarmen Beigetönen gehalten. Kräftige Farben erscheinen nur dort, wo sie echten funktionalen Wert haben (z. B. beim 1-Tap Akut-Schub-Button, der persönlichen Ampel oder erhöhten Symptomwerten).
+      </p>
+      <div class="impulse-box" style="margin-top:12px;">
+        <strong>Wichtiger rechtlicher Hinweis:</strong> Die Anwendung ist kein Medizinprodukt. Sie stellt keine Diagnosen, gibt keine Heilversprechen ab und schlägt keine medikamentösen Therapien vor. Alle Auswertungen beschreiben ausschließlich Korrelationen in deinen eigenen Aufzeichnungen.
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="section-label">2. Die 5 Bereiche im Überblick</div>
+      <h2 class="card-title" style="margin-bottom:10px;">So nutzt du die App im Alltag</h2>
+      <div class="item-list">
+        <div class="list-row">
+          <div>
+            <div class="list-row-title">Tab 1: Heute (30-Sekunden Check-in &amp; 1-Tap Schub)</div>
+            <div class="list-row-meta">
+              Oben findest du den prominenten Notfall-Button für akute Schmerzschübe (abgedunkelte, kontrastreiche Oberfläche). Darunter zeigt dir der Zyklus-Kompass deinen aktuellen Zyklustag samt Erfahrungswerten aus deiner eigenen Historie. Mit den drei Slidern (Schmerz, Entzündung, Energie) und den Tag-Chips ist dein Tages-Log in unter 30 Sekunden gespeichert.
+            </div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div>
+            <div class="list-row-title">Tab 2: Muster (Heatmap, Verzögerungs-Detektiv &amp; Experimente)</div>
+            <div class="list-row-meta">
+              Die 52-Wochen-Heatmap macht langfristige Phasen auf einen Blick sichtbar. Der Verzögerungs-Detektiv prüft zeitversetzte Zusammenhänge über +0h, +24h, +48h und +72h (sobald ein Faktor mindestens 3-mal vorkam). Ergänzt wird dieser Bereich durch deine persönliche Grün/Gelb/Rot-Ampel und den Vorher/Nachher-Vergleich deiner Selbst-Experimente.
+            </div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div>
+            <div class="list-row-title">Tab 3: Tresor (Laborwerte, Befunde &amp; 1-Klick Arzt-Dossier)</div>
+            <div class="list-row-meta">
+              Hier verwaltest du Blutwerte (z. B. CRP, Ferritin, Vitamin D) inklusive Verlaufsgrafik, Arztbrief-Zusammenfassungen und deine Fragenliste für den nächsten Termin. Über den Button "Arzttermin-Dossier (PDF) generieren" erzeugst du sofort eine druckfertige 1- bis 2-seitige Zusammenfassung.
+            </div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div>
+            <div class="list-row-title">Tab 4: Radar (PubMed Studien &amp; Termin-Profile)</div>
+            <div class="list-row-meta">
+              Durchsuche kuratierte PubMed-Studien nach Themenclustern (Endometriose, Entzündung &amp; Darm, Bauchfell &amp; Abdomen, Diagnostik-Lücke) und hinterlege Schnellzugriffe auf Buchungsportale für Osteopathie, Lymphdrainage oder Facharztzentren.
+            </div>
+          </div>
+        </div>
+        <div class="list-row">
+          <div>
+            <div class="list-row-title">Tab 5: Mehr (Eigene Felder, PIN-Schutz &amp; JSON-Backup)</div>
+            <div class="list-row-meta">
+              Erstelle eigene Tracking-Felder (Skala 0 bis 10 oder Ja/Nein), aktiviere bei Bedarf eine 4-stellige lokale PIN-Sperre und sichere deine Daten jederzeit als JSON-Datei.
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="card">
+      <div class="section-label">3. Dual-Mode &amp; Mobile Installation</div>
+      <h2 class="card-title" style="margin-bottom:8px;">iPhone / Android Home-Bildschirm &amp; Datenspeicherung</h2>
+      <p class="card-subtitle" style="margin-bottom:10px;">
+        Die Endo-App funktioniert sowohl komplett eigenständig im Browser (z. B. über GitHub Pages mit lokaler Speicherung in IndexedDB) als auch gekoppelt an das lokale Python-FastAPI-Backend (`data/data.json` mit automatischer `.bak.1` bis `.bak.5` Backup-Rotation).
+      </p>
+      <div class="card-subtle">
+        <div class="list-row-title">Installation als App auf dem iPhone (Safari):</div>
+        <ol style="padding-left:18px;margin-top:6px;font-size:0.84rem;color:var(--text-muted);">
+          <li>Öffne die App-URL in Safari auf deinem iPhone.</li>
+          <li>Tippe unten in der Mitte auf das Teilen-Symbol.</li>
+          <li>Wähle "Zum Home-Bildschirm" und bestätige oben rechts mit "Hinzufügen".</li>
+        </ol>
+      </div>
+    </article>
+  </main>
+</body>
+</html>
